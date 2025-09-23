@@ -17,5 +17,25 @@ class Usuario(Base):
     senha = Column("senha" , String)
     ativo = Column("ativo" , Boolean)
     admin = Column("admin" , Boolean, default=False)
+    
+    def __init__(self,nome,email,senha,ativo=True,admin=False):
+        self.nome = nome
+        self.email = email
+        self.senha = senha
+        self.ativo = ativo
+        self.admin = admin
+
+class Pedido(Base):
+    __tablename__ = "pedidos"
+    
+    id_pedido = Column("id_pedido", Integer,primary_key=True, autoincrement=True)
+    status = Column("status", String) # Pendente , cancelado , finalizado
+    usuario = Column("usuario",ForeignKey("usuarios.id"))
+    preco = Column("preco", Float)
+
+    def __init__(self,usuario,status="PENDENTE",preco=0):
+        self.usuario = usuario
+        self.status = status
+        self.preco = preco
 
 # executa a criação
