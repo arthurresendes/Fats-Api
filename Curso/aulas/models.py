@@ -2,6 +2,9 @@ from sqlalchemy import create_engine, Column, String , Integer, Boolean , Float 
 from sqlalchemy.orm import declarative_base
 from sqlalchemy_utils.types import ChoiceType
 
+# alembic upgrade head
+# alembic revision --autogenerate -m "Initial Migration"
+# alembic revision --autogenerate -r "alterando algo"
 
 # Cria a conexão com o banco
 db = create_engine("sqlite:///banco.db")
@@ -30,14 +33,15 @@ class Usuario(Base):
 class Pedido(Base):
     __tablename__ = "pedidos"
     
-    STATUS_PEDIDOS = (
+    '''STATUS_PEDIDOS = (
         ("PENDENTE", "PENDENTE"),
         ("CANCELADO","CANCELADO"),
         ("FINALIZADO", "FINALIZADO")
     )
+    '''
     
     id_pedido = Column("id_pedido", Integer,primary_key=True, autoincrement=True)
-    status = Column("status", ChoiceType ( choices=STATUS_PEDIDOS)) # Pendente , cancelado , finalizado
+    status = Column("status", String) # Pendente , cancelado , finalizado
     usuario = Column("usuario",ForeignKey("usuarios.id"))
     preco = Column("preco", Float)
 
