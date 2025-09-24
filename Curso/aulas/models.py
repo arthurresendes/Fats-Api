@@ -2,6 +2,7 @@ from sqlalchemy import create_engine, Column, String , Integer, Boolean , Float 
 from sqlalchemy.orm import declarative_base
 from sqlalchemy_utils.types import ChoiceType
 
+# alembic init alembic
 # alembic upgrade head
 # alembic revision --autogenerate -m "Initial Migration"
 # alembic revision --autogenerate -r "alterando algo"
