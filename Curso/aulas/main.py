@@ -1,6 +1,6 @@
 '''
 
-uvicorn nome_arq:app --reload
+uvicorn main:app --reload
 
 RestAPIs: 
 
