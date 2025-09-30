@@ -13,6 +13,12 @@ Delete -> Deletar
 http://127.0.0.1:8000/docs - Para ver as documentações
 '''
 from fastapi import FastAPI
+from passlib.context import CryptContext
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
+SECRET_KEY = os.getenv("SECRET_KEY")
 
 app = FastAPI()
 
