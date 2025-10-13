@@ -1,82 +1,51 @@
-from fastapi import FastAPI
-from fastapi import status, HTTPException,Response,Path,Query,Header,Depends
-from models import Curso
-from typing import Optional, Any,Dict,List
-from time import sleep
-# & "C:\Users\arregomes\Envs\famp-secao03\Scripts\Activate.ps1"
-def fake_db():
-    try:
-        print("Abrindo conexão com o banco de dados")
-        sleep(1)
-    finally:
-        print("Fechando conexão com banco de dados!!")
-        sleep(2)
+from fastapi import FastAPI,HTTPException,status, Response
+from modelAluno import Alunos
 
-
-app = FastAPI(title="Aprendizado Fast Api",
-              version="0.0.1",
-              description="Uma API para estudo do FastApi"
-              )
-
-cursos = {
-    1:{
-        "titulo": "Programação",
-        "aulas": 112,
-        "horas": 58
-    },
-    2:{
-        "titulo": "Python",
-        "aulas": 300,
-        "horas": 64
-    }
+app = FastAPI()
+alunos = {
+    1: {"nome": "Alice", "idade": 20, "curso": "Engenharia"},
+    2: {"nome": "Bruno", "idade": 22, "curso": "Administração"},
+    3: {"nome": "Carla", "idade": 19, "curso": "Ciência da Computação"}
 }
 
-@app.get('/cursos', description="Retorna todos os cursos ou lista vazia", summary="Retorna todos os cursos", response_model=Dict[int,Curso], response_description="Cursos encontrados")
-async def get_cursos(db: Any = Depends(fake_db)):
-    return cursos
+@app.get("/")
+async def raiz():
+    return {"Mensagem": "Bem-vindo ao controle de alunos , nele podera ser feito um CRUD!!"}
 
-@app.get('/cursos/{curso_id}')
-async def get_cursos_id(curso_id:int = Path(default=None, title="ID do curso", description="Deve ser entre 1 e 2", gt=0, lt=3)):
-    try:
-        curso = cursos[curso_id]
-        curso.update({"id": curso_id})
-        return curso
-    except KeyError:
-        raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Curso não encontrado")
+@app.get("/alunos")
+async def ver_todos_alunos():
+    return alunos
 
-@app.post('/cursos', status_code=status.HTTP_201_CREATED)
-async def post_curso(curso: Curso):
-    next_id:int = len(cursos) + 1
-    cursos[next_id] = curso
-    del curso.id
-    return curso
-
-@app.put("/cursos/{curso_id}")
-async def put_curso(curso_id: int,curso: Curso):
-    if curso_id in cursos:
-        cursos[curso_id] = curso
-        curso.id = curso_id
-        return curso
+@app.get("/alunos/{alunos_id}")
+async def buscar_aluno_por_id(alunos_id : int):
+    if alunos_id in alunos:
+        return alunos[alunos_id]
     else:
-        return HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail=f"Não existe um curso com o id {curso_id}")
+        return HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Id não encontrado")
 
-@app.delete("/cursos/{curso_id}")
-async def delete_curso(curso_id:int):
-    if curso_id in cursos:
-        del cursos[curso_id]
+@app.post("/alunos", status_code=status.HTTP_201_CREATED)
+async def adicionando_aluno(aluno:Alunos):
+    proximo_id = len(alunos) + 1
+    alunos[proximo_id] = aluno
+    return aluno
+
+@app.put("/alunos/{alunos_id}")
+async def atualizar_aluno(alunos_id:int, aluno: Alunos):
+    if alunos_id in alunos:
+        alunos[alunos_id] = aluno
+        return aluno
+    else:
+        return HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Id não encontrado")
+        
+@app.delete("/alunos/{alunos_id}")
+async def deletar_aluno(alunos_id:int):
+    if alunos_id in alunos:
+        del alunos[alunos_id]
         return Response(status_code=status.HTTP_204_NO_CONTENT)
     else:
         return HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Id não encontrado")
 
-@app.get("/calculadora")
-async def calcular(a:int = Query(default=None, gt=5) ,b:int = Query(default=None, gt=10),x_arthur: str = Header(default=None),c: Optional[int] = None):
-    if c:
-        soma = a+b + c
-    else:
-        soma = a+b
-    print(f"x_arthur , {x_arthur}")
-    return {"resultado": soma}
 if __name__ == "__main__":
     import uvicorn
     
-    uvicorn.run("main:app", host="127.0.0.1", port=8000, debug=True, reload=True)
+    uvicorn.run("alunos:app", host="127.0.0.1", port=8000,reload=True)
