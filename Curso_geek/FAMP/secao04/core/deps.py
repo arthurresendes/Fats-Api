@@ -1,5 +1,5 @@
-from typing import AsyncGenerator
-from sqlalchemy.ext.asyncio import AsyncSession
+from typing import AsyncGenerator # Uso reduzido de memoria assincronico
+from sqlalchemy.ext.asyncio import AsyncSession 
 from core.database import Session
 
 async def get_session() -> AsyncGenerator:
