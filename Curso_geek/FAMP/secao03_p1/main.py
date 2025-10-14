@@ -3,6 +3,7 @@ from fastapi import status, HTTPException,Response,Path,Query,Header,Depends
 from models import Curso
 from typing import Optional, Any,Dict,List
 from time import sleep
+from models import cursos
 # & "C:\Users\arregomes\Envs\famp-secao03\Scripts\Activate.ps1"
 def fake_db():
     try:
@@ -18,18 +19,6 @@ app = FastAPI(title="Aprendizado Fast Api",
               description="Uma API para estudo do FastApi"
               )
 
-cursos = {
-    1:{
-        "titulo": "Programação",
-        "aulas": 112,
-        "horas": 58
-    },
-    2:{
-        "titulo": "Python",
-        "aulas": 300,
-        "horas": 64
-    }
-}
 
 @app.get('/cursos', description="Retorna todos os cursos ou lista vazia", summary="Retorna todos os cursos", response_model=Dict[int,Curso], response_description="Cursos encontrados")
 async def get_cursos(db: Any = Depends(fake_db)):
