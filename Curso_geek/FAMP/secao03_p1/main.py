@@ -4,14 +4,7 @@ from models import Curso
 from typing import Optional, Any,Dict,List
 from time import sleep
 from models import cursos
-# & "C:\Users\arregomes\Envs\famp-secao03\Scripts\Activate.ps1"
-def fake_db():
-    try:
-        print("Abrindo conexão com o banco de dados")
-        sleep(1)
-    finally:
-        print("Fechando conexão com banco de dados!!")
-        sleep(2)
+# & "C:\Users\arthu\Envs\famp-secao03\Scripts\Activate.ps1"
 
 
 app = FastAPI(title="Aprendizado Fast Api",
@@ -21,7 +14,7 @@ app = FastAPI(title="Aprendizado Fast Api",
 
 
 @app.get('/cursos', description="Retorna todos os cursos ou lista vazia", summary="Retorna todos os cursos", response_model=Dict[int,Curso], response_description="Cursos encontrados")
-async def get_cursos(db: Any = Depends(fake_db)):
+async def get_cursos():
     return cursos
 
 @app.get('/cursos/{curso_id}')
@@ -36,8 +29,8 @@ async def get_cursos_id(curso_id:int = Path(default=None, title="ID do curso", d
 @app.post('/cursos', status_code=status.HTTP_201_CREATED)
 async def post_curso(curso: Curso):
     next_id:int = len(cursos) + 1
-    cursos[next_id] = curso
-    del curso.id
+    curso.id = next_id
+    cursos.append(curso)
     return curso
 
 @app.put("/cursos/{curso_id}")
