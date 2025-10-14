@@ -1,6 +1,6 @@
 from core.configs import settings
 from sqlalchemy import Column,Integer,String
-
+# Criação do banco
 class CursoModel(settings.DBBaseModel):
     __tablename__ = 'cursos'
     
