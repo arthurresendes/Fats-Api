@@ -4,11 +4,10 @@ from pydantic import BaseModel as SCBaseModel
 # Para cada tabela deve ter um shcema 
 
 class CursoSchema(SCBaseModel):
-    id: Optional[int]
+    id: Optional[int] = None
     titulo: str
     aulas: int
     horas: int
     
     class Config:
-        orm_mode = True
-
+        from_attributes = True
