@@ -16,7 +16,13 @@ CORE -> Utilizado para funcionalidades essenciais e configurações internas da 
 configs.py:
     Utilizamos para passar uma classe herdando uma BaseSetting e la passamos o caminho basico da url de endpoints , banco de dados , declaramos a sua base , senha secreta , entre outras coisas
 
-MODELS
+database.py:
+    criamos uma engine assincrona passando a url da configs e logo abaixo criamos uma Session que vai ser = a um sessionmaker com as configurações necessarias
 
-SCHEMAS
+deps.py:
+    Dependencias
+
+MODELS: Modelagem dos dados no banco de dados como criação de tabelas , colunas , etc
+
+SCHEMAS: São utilizado para validar os dados que entram e saem em JSON
 '''

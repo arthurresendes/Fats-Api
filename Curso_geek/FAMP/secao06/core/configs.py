@@ -7,7 +7,7 @@ class Settings(BaseSettings):
     DB_URL: str = "sqlite+aiosqlite:///./faculdade.db"
     DBBaseModel: ClassVar  = declarative_base()
     
-    JWT_SECRET: str = 'UbkXnRReI2kei3dBQSLdvZ8nBBJjN3tWwcRzqy8_Iyw'
+    JWT_SECRET: str = 'UbkXnRReI2kei3dBQSLdvZ8nBBJjN3tWwcRzqy8_Iyw' # JSON Web Tokens (JWTs).
     '''
     terminal
     python
@@ -18,7 +18,7 @@ class Settings(BaseSettings):
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 60 * 24 * 7
     
     class Config:
-        case_sensitive = True
+        case_sensitive = True # O case sensitive serve para distinguir entre letras maiúsculas e minúsculas, tratando-as como caracteres diferentes
         
 
 settings : Settings = Settings()
