@@ -11,7 +11,10 @@ API(Diretorio) -> Diretorio onde ficara armazendo um subdiretorio v1 que nele te
         - Sempre fazer o await db.commit() e await db.refresh() (menos no get pois é so visualização e refresh no delete nao é necessario pois não retorna nada)
         - Sempre especificar o tipo dos parametros com :
 
-CORE ->
+CORE -> Utilizado para funcionalidades essenciais e configurações internas da aplicação. Sua principal função é isolar a lógica fundamental que é compartilhada por toda a API, garantindo modularidade, organização e escalabilidade, especialmente em projetos maiores.
+
+configs.py:
+    Utilizamos para passar uma classe herdando uma BaseSetting e la passamos o caminho basico da url de endpoints , banco de dados , declaramos a sua base , senha secreta , entre outras coisas
 
 MODELS
 

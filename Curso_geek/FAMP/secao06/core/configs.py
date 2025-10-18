@@ -1,4 +1,4 @@
-from typing import List, ClassVar
+from typing import ClassVar
 from pydantic_settings import BaseSettings
 from sqlalchemy.ext.declarative import declarative_base
 
