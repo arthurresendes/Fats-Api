@@ -11,16 +11,15 @@ router = APIRouter()
 
 @router.post('/', status_code=status.HTTP_201_CREATED, response_model=ArtigoSchema)
 async def post_artigo(artigo: ArtigoSchema, usuario_logado: UsuarioModel = Depends(get_current_user), db: AsyncSession = Depends(get_session)):
-    # CONVERTER HttpUrl para string antes de salvar
     novo_artigo: ArtigoModel = ArtigoModel(
         titulo=artigo.titulo, 
         descricao=artigo.descricao, 
-        url_fonte=str(artigo.url_fonte),  # ✅ CONVERTER para string
+        url_fonte=str(artigo.url_fonte),
         usuario_id=usuario_logado.id
     ) 
     db.add(novo_artigo)
     await db.commit()
-    await db.refresh(novo_artigo)  # ✅ ADICIONAR para obter o ID
+    await db.refresh(novo_artigo)
     return novo_artigo
 
 @router.get('/',response_model=List[ArtigoSchema])
@@ -55,12 +54,12 @@ async def update_artigo(artigo_id: int, artigo: ArtigoSchema ,db: AsyncSession =
             if artigo.descricao:
                 artigo_up.descricao = artigo.descricao
             if artigo.url_fonte:
-                artigo_up.url_fonte = str(artigo.url_fonte)  # ✅ CONVERTER aqui também
+                artigo_up.url_fonte = str(artigo.url_fonte)
             if usuario_logado.id != artigo_up.usuario_id:
                 artigo_up.usuario_id = usuario_logado.id
             
             await session.commit()
-            await session.refresh(artigo_up)  # ✅ ADICIONAR
+            await session.refresh(artigo_up)
             return artigo_up
         else:
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Artigo não encotrado")
