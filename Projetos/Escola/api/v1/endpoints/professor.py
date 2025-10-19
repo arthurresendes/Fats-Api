@@ -11,8 +11,9 @@ router = APIRouter()
 
 @router.post("/", status_code=status.HTTP_201_CREATED,response_model=ProfessorSchema)
 async def post_professor(professor: ProfessorSchema, db: AsyncSession = Depends(get_session)):
-    novo_professor = ProfessorModel(nome=professor.nome, idade=professor.idade, ano_escolar = professor.aula_ano_escolar)
+    novo_professor = ProfessorModel(nome=professor.nome, idade=professor.idade, aula_ano_escolar = professor.aula_ano_escolar)
     db.add(novo_professor)
+    await db.commit()
     await db.refresh(novo_professor)
     
     return novo_professor
@@ -30,7 +31,7 @@ async def get_professor_individual(professor_id: int , db:AsyncSession = Depends
     async with db as session:
         query = select(ProfessorModel).filter(ProfessorModel.id == professor_id)
         result = await session.execute(query)
-        professor = result.scalars().one_or_none
+        professor = result.scalars().one_or_none()
         
         if professor:
             return professor
@@ -39,21 +40,23 @@ async def get_professor_individual(professor_id: int , db:AsyncSession = Depends
 
 
 @router.put("/{professor_id}", response_model=ProfessorSchema, status_code=status.HTTP_202_ACCEPTED)
-async def put_professor(professor_id: int ,professor: ProfessorSchema ,db: AsyncSession = Depends(get_session)):
+async def put_professor(professor_id: int, professor: ProfessorSchema, db: AsyncSession = Depends(get_session)):
     async with db as session:
         query = select(ProfessorModel).filter(ProfessorModel.id == professor_id)
         result = await session.execute(query)
-        prof_up = result.scalars().one_or_none
-        
+        prof_up = result.scalars().one_or_none()
+
         if prof_up:
             prof_up.nome = professor.nome
             prof_up.idade = professor.idade
             prof_up.aula_ano_escolar = professor.aula_ano_escolar
-            
+
             await db.commit()
+            await db.refresh(prof_up)
             return prof_up
+
         else:
-            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND)
+            raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Professor não encontrado")
 
 @router.delete("/{professor_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_aluno(professor_id:int , db: AsyncSession = Depends(get_session)):

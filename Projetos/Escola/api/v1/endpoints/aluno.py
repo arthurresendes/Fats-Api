@@ -13,6 +13,7 @@ router = APIRouter()
 async def post_aluno(aluno: AlunoSchema, db: AsyncSession = Depends(get_session)):
     novo_aluno = AlunoModel(nome=aluno.nome, idade=aluno.idade, ano_escolar = aluno.ano_escolar)
     db.add(novo_aluno)
+    await db.commit()
     await db.refresh(novo_aluno)
     
     return novo_aluno
@@ -30,7 +31,7 @@ async def get_aluno_individual(aluno_id: int , db:AsyncSession = Depends(get_ses
     async with db as session:
         query = select(AlunoModel).filter(AlunoModel.id == aluno_id)
         result = await session.execute(query)
-        aluno = result.scalars().one_or_none
+        aluno = result.scalars().one_or_none()
         
         if aluno:
             return aluno
@@ -43,7 +44,7 @@ async def put_aluno(aluno_id: int ,aluno: AlunoSchema ,db: AsyncSession = Depend
     async with db as session:
         query = select(AlunoModel).filter(AlunoModel.id == aluno_id)
         result = await session.execute(query)
-        aluno_up = result.scalars().one_or_none
+        aluno_up = result.scalars().one_or_none()
         
         if aluno_up:
             aluno_up.nome = aluno.nome
