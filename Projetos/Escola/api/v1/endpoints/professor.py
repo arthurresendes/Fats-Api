@@ -59,7 +59,7 @@ async def put_professor(professor_id: int, professor: ProfessorSchema, db: Async
             raise HTTPException(status_code=status.HTTP_404_NOT_FOUND, detail="Professor não encontrado")
 
 @router.delete("/{professor_id}", status_code=status.HTTP_204_NO_CONTENT)
-async def delete_aluno(professor_id:int , db: AsyncSession = Depends(get_session)):
+async def delete_professor(professor_id:int , db: AsyncSession = Depends(get_session)):
     async with db as session:
         query = select(ProfessorModel).filter(ProfessorModel.id == professor_id)
         result = await session.execute(query)
