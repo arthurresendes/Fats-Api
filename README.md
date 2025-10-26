@@ -24,7 +24,7 @@ Criação de schemas como base na ligação com CRUD da Api.
 
 ## [Core](https://github.com/arthurresendes/Fats-Api/tree/main/Curso_geek/FAMP/secao06/core)
 Criação de configurações des de dependencias basicas ate validação com tokens.
-- `config/`: Caminho onde mostra o devido conhecimento.
+- `core/`: Caminho onde mostra o devido conhecimento.
 
 ---
 
